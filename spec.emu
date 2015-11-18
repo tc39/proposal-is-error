@@ -1,0 +1,19 @@
+<!doctype html>
+<meta charset="utf8">
+<link rel="stylesheet" href="./spec.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
+<script src="./spec.js"></script>
+<pre class="metadata">
+title: Error.isError
+stage: 0
+contributors: Jordan Harband
+</pre>
+<emu-clause id="Error.isError">
+	<h1>Error.isError( arg )</h1>
+	<p>When the *isError* function is called with argument _arg_, the following steps are taken:</p>
+	<emu-alg>
+		1. If Type(_arg_) is not Object, return *false*.
+		1. If _arg_ does not have an [[ErrorData]] internal slot, return *false*.
+		1. Return *true*.
+	</emu-alg>
+</emu-clause>
