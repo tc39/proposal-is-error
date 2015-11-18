@@ -1,0 +1,31 @@
+{
+	"name": "ecma-proposal-is-error",
+	"version": "0.0.0",
+	"description": "ES7 spec proposal for Error.isError",
+	"scripts": {
+		"build": "ecmarkup spec.emu --js=spec.js --css=spec.css | js-beautify -f - --type=html -t > index.html",
+		"prepublish": "npm run build && echo >&2 'no publishing' && exit 255"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/ljharb/proposal-is-error.git"
+	},
+	"keywords": [
+		"Error.isError",
+		"Error",
+		"TypeError",
+		"ES7",
+		"spec"
+	],
+	"author": "Jordan Harband <ljharb@gmail.com>",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/ljharb/proposal-is-error/issues"
+	},
+	"homepage": "https://github.com/ljharb/proposal-is-error#readme",
+	"dependencies": {},
+	"devDependencies": {
+		"ecmarkup": "^2.8.1",
+		"js-beautify": "^1.5.10"
+	}
+}
