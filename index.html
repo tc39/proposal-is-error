@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 	<script src="./spec.js"></script>
 	<title>Error.isError</title>
-	<script type="application/json" id="menu-search-biblio">{"clauses":{"Error.isError":{"location":"","id":"Error.isError","aoid":null,"title":"Error.isError( arg )","number":"1"},"sec-copyright-and-software-license":{"location":"","id":"sec-copyright-and-software-license","aoid":null,"title":"Copyright & Software License","number":"A"}},"ops":{},"productions":{},"terms":{},"examples":{},"notes":{},"tables":{},"figures":{}}</script>
+	<script type="application/json" id="menu-search-biblio">{"clauses":{"":{"location":"","id":"","aoid":"IsError","title":"IsError( argument )","number":"1"},"Error.isError":{"location":"","id":"Error.isError","aoid":null,"title":"Error.isError( arg )","number":"2"},"sec-copyright-and-software-license":{"location":"","id":"sec-copyright-and-software-license","aoid":null,"title":"Copyright & Software License","number":"A"}},"ops":{"IsError":{"aoid":"IsError","id":"","location":""}},"productions":{},"terms":{},"examples":{},"notes":{},"tables":{},"figures":{}}</script>
 </head>
 
 <body>
@@ -18,25 +18,45 @@
 		</div>
 		<div id="menu-toc">
 			<ol class="toc">
-				<li><span class="item-toggle-none"></span><a href="#Error.isError" title="Error.isError( arg )"><span class="secnum">1</span> Error.isError( arg )</a></li>
+				<li><span class="item-toggle-none"></span><a href="#" title="IsError( argument )"><span class="secnum">1</span> IsError( argument )</a></li>
+				<li><span class="item-toggle-none"></span><a href="#Error.isError" title="Error.isError( arg )"><span class="secnum">2</span> Error.isError( arg )</a></li>
 				<li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License"><span class="secnum">A</span> Copyright &amp; Software License</a></li>
 			</ol>
 		</div>
 	</div>
-	<h1 class="version">Stage 0 Draft / November 18, 2015</h1>
+	<h1 class="version">Stage 0 Draft / November 19, 2015</h1>
 	<h1 class="title">Error.isError</h1>
+	<emu-clause aoid="IsError">
+		<h1><span class="secnum">1</span>IsError( argument )<span class="utils"><span class="anchor"><a href="#">#</a></span></span></h1>
+		<p>When the
+			<emu-val>IsError</emu-val> abstract operation is called with argument <var>argument</var>, the following steps are taken:</p>
+		<emu-alg>
+			<ol>
+				<li>If <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-ecmascript-data-types-and-values">Type</a>(<var>argument</var>) is not Object, return
+					<emu-val>false</emu-val>.</li>
+				<li>If <var>argument</var> has an [[ErrorData]] internal slot, return
+					<emu-val>true</emu-val>.</li>
+				<li>If <var>argument</var> is a Proxy exotic object, then
+					<ol>
+						<li>If the value of the [[ProxyHandler]] internal slot of <var>argument</var> is
+							<emu-val>null</emu-val>, throw a <var>TypeError</var> exception.</li>
+						<li>Let <var>target</var> be the value of the [[ProxyTarget]] internal slot of <var>argument</var>.</li>
+						<li>Return <a href="#">IsError</a>(<var>target</var>).</li>
+					</ol>
+				</li>
+				<li>Return
+					<emu-val>false</emu-val>.
+				</li>
+			</ol>
+		</emu-alg>
+	</emu-clause>
 	<emu-clause id="Error.isError">
-		<h1><span class="secnum">1</span>Error.isError( arg )<span class="utils"><span class="anchor"><a href="#Error.isError">#</a></span></span></h1>
+		<h1><span class="secnum">2</span>Error.isError( arg )<span class="utils"><span class="anchor"><a href="#Error.isError">#</a></span></span></h1>
 		<p>When the
 			<emu-val>isError</emu-val> function is called with argument <var>arg</var>, the following steps are taken:</p>
 		<emu-alg>
 			<ol>
-				<li>If <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-ecmascript-data-types-and-values">Type</a>(<var>arg</var>) is not Object, return
-					<emu-val>false</emu-val>.</li>
-				<li>If <var>arg</var> does not have an [[ErrorData]] internal slot, return
-					<emu-val>false</emu-val>.</li>
-				<li>Return
-					<emu-val>true</emu-val>.
+				<li>Return <a href="#">IsError</a>(<var>arg</var>).
 				</li>
 			</ol>
 		</emu-alg>
