@@ -8,12 +8,23 @@ title: Error.isError
 stage: 0
 contributors: Jordan Harband
 </pre>
+<emu-clause aoid="IsError">
+	<h1>IsError( argument )</h1>
+	<p>When the *IsError* abstract operation is called with argument _argument_, the following steps are taken:</p>
+	<emu-alg>
+		1. If Type(_argument_) is not Object, return *false*.
+		1. If _argument_ has an [[ErrorData]] internal slot, return *true*.
+		1. If _argument_ is a Proxy exotic object, then
+			1. If the value of the [[ProxyHandler]] internal slot of _argument_ is *null*, throw a _TypeError_ exception.
+			1. Let _target_ be the value of the [[ProxyTarget]] internal slot of _argument_.
+			1. Return IsError(_target_).
+		1. Return *false*.
+	</emu-alg>
+</emu-clause>
 <emu-clause id="Error.isError">
 	<h1>Error.isError( arg )</h1>
 	<p>When the *isError* function is called with argument _arg_, the following steps are taken:</p>
 	<emu-alg>
-		1. If Type(_arg_) is not Object, return *false*.
-		1. If _arg_ does not have an [[ErrorData]] internal slot, return *false*.
-		1. Return *true*.
+		1. Return IsError(_arg_).
 	</emu-alg>
 </emu-clause>
