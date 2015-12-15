@@ -32,7 +32,8 @@
 			<emu-val>IsError</emu-val> abstract operation is called with argument <var>argument</var>, the following steps are taken:</p>
 		<emu-alg>
 			<ol>
-				<li>If <a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-ecmascript-data-types-and-values">Type</a>(<var>argument</var>) is not Object, return
+				<li>If
+					<emu-xref aoid="Type"><a href="http://www.ecma-international.org/ecma-262/6.0/index.html#sec-ecmascript-data-types-and-values">Type</a></emu-xref>(<var>argument</var>) is not Object, return
 					<emu-val>false</emu-val>.</li>
 				<li>If <var>argument</var> has an [[ErrorData]] internal slot, return
 					<emu-val>true</emu-val>.</li>
@@ -41,7 +42,8 @@
 						<li>If the value of the [[ProxyHandler]] internal slot of <var>argument</var> is
 							<emu-val>null</emu-val>, throw a <var>TypeError</var> exception.</li>
 						<li>Let <var>target</var> be the value of the [[ProxyTarget]] internal slot of <var>argument</var>.</li>
-						<li>Return <a href="#">IsError</a>(<var>target</var>).</li>
+						<li>Return
+							<emu-xref aoid="IsError"><a href="#">IsError</a></emu-xref>(<var>target</var>).</li>
 					</ol>
 				</li>
 				<li>Return
@@ -56,7 +58,8 @@
 			<emu-val>isError</emu-val> function is called with argument <var>arg</var>, the following steps are taken:</p>
 		<emu-alg>
 			<ol>
-				<li>Return <a href="#">IsError</a>(<var>arg</var>).
+				<li>Return
+					<emu-xref aoid="IsError"><a href="#">IsError</a></emu-xref>(<var>arg</var>).
 				</li>
 			</ol>
 		</emu-alg>

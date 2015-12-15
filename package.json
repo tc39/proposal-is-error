@@ -25,7 +25,7 @@
 	"homepage": "https://github.com/ljharb/proposal-is-error#readme",
 	"dependencies": {},
 	"devDependencies": {
-		"ecmarkup": "^2.8.1",
+		"ecmarkup": "^2.8.3",
 		"js-beautify": "^1.5.10"
 	}
 }
