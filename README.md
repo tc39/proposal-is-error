@@ -1,5 +1,5 @@
 # [Error.isError]()
-ES7 Proposal, specs, and reference implementation for `Error.isError`
+ECMAScript Proposal, specs, and reference implementation for `Error.isError`
 
 Spec drafted by [@ljharb](https://github.com/ljharb).
 

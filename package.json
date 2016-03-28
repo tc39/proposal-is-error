@@ -1,7 +1,7 @@
 {
 	"name": "ecma-proposal-is-error",
 	"version": "0.0.0",
-	"description": "ES7 spec proposal for Error.isError",
+	"description": "ECMAScript spec proposal for Error.isError",
 	"scripts": {
 		"build": "ecmarkup spec.emu --js=spec.js --css=spec.css | js-beautify -f - --type=html -t > index.html",
 		"prepublish": "npm run build && echo >&2 'no publishing' && exit 255"
@@ -15,6 +15,8 @@
 		"Error",
 		"TypeError",
 		"ES7",
+		"ECMAScript",
+		"ESNext",
 		"spec"
 	],
 	"author": "Jordan Harband <ljharb@gmail.com>",
