@@ -5,7 +5,7 @@
 <script src="./spec.js"></script>
 <pre class="metadata">
 title: Error.isError
-stage: 0
+stage: 0 (withdrawn)
 contributors: Jordan Harband
 </pre>
 <emu-clause aoid="IsError">
