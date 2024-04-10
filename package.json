@@ -3,12 +3,14 @@
 	"version": "0.0.0",
 	"description": "ECMAScript spec proposal for Error.isError",
 	"scripts": {
-		"build": "ecmarkup spec.emu --js=spec.js --css=spec.css | js-beautify -f - --type=html -t > index.html",
-		"prepublish": "npm run build && echo >&2 'no publishing' && exit 255"
+		"prepublish": "npm run build && echo >&2 'no publishing' && exit 255",
+		"start": "npm run build-loose -- --watch",
+		"build": "npm run build-loose -- --strict",
+		"build-loose": "ecmarkup --load-biblio @tc39/ecma262-biblio --verbose spec.emu index.html --lint-spec"
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/ljharb/proposal-is-error.git"
+		"url": "git+https://github.com/tc39/proposal-is-error.git"
 	},
 	"keywords": [
 		"Error.isError",
@@ -22,12 +24,11 @@
 	"author": "Jordan Harband <ljharb@gmail.com>",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/ljharb/proposal-is-error/issues"
+		"url": "https://github.com/tc39/proposal-is-error/issues"
 	},
-	"homepage": "https://github.com/ljharb/proposal-is-error#readme",
-	"dependencies": {},
+	"homepage": "https://github.com/tc39/proposal-is-error#readme",
 	"devDependencies": {
-		"ecmarkup": "^2.8.3",
-		"js-beautify": "^1.5.10"
+		"@tc39/ecma262-biblio": "^2.1.2719",
+		"ecmarkup": "^18.3.1"
 	}
 }
