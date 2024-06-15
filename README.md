@@ -19,6 +19,7 @@ This list is not exhaustive.
  - debugging: it is very helpful to humans, even if not always to programs, to know what kind of thing a value is. Knowing if something is a "real" native error is thus valuable information to make available, including to error-reporting libraries.
  - serialization: platforms such as [RunKit](https://runkit.com/) need to serialize values safely and reconstruct them or describe them in the user’s browser. brand checking is critical for this.
  - structuredClone: this HTML method, which is also in node, brand-checks, and has special behavior for native Errors. JS programs need a way to know in advance if this behavior will be applied
+ - centralized error collection: reporting errors from an iframe (w/ same origin) to a top frame where all errors are collected, evaluated, and reported to a personalized server to be investigated at a later time. However, a `throw` statement can throw any exception with an unknown type of data, and a verification is required for the data to be collected. The `thrownData instanceof Error` doesn't satisfy `Error` because the thrown error will inherit the `Error` instance of another realm, meaning `contentWindow.Error` is the abstract and `thrownData instanceof document.getElementsByTagName('iframe')[0].contentWindow.Error`  is required to satisfy the validation.
 
 ## Spec
 You can view the spec rendered as [HTML](https://tc39.es/proposal-is-error/).
