@@ -28,7 +28,7 @@
 	},
 	"homepage": "https://github.com/tc39/proposal-is-error#readme",
 	"devDependencies": {
-		"@tc39/ecma262-biblio": "^2.1.2719",
+		"@tc39/ecma262-biblio": "^2.1.2736",
 		"ecmarkup": "^18.3.1"
 	}
 }
