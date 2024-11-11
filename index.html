@@ -1,5 +1,29 @@
 <!doctype html>
-<head><meta charset="utf-8">
+<head><meta charset="utf-8"><meta property="og:image" content="https://tc39.es/ecmarkup/ecma-logo.png"><meta property="og:title" content="Error.isError"><meta property="og:description" content="Fundamental Objects
+
+	
+		Error Objects
+
+		
+			Properties of the Error Constructor
+
+			
+				Error.isError ( _arg_ )
+
+				
+					1. Return IsError(_arg_).
+				
+			
+		
+
+		
+			Abstract Operations for Error Objects
+
+			
+				
+					IsError(
+						_argument_: an Ecmascript language value,
+					): a Boolean">
 <title>Error.isError</title><script>'use strict';
 let sdoBox = {
   init() {
@@ -658,6 +682,7 @@ Menu.prototype.togglePinEntry = function (id) {
 };
 
 Menu.prototype.selectPin = function (num) {
+  if (num >= this.$pinList.children.length) return;
   document.location = this.$pinList.children[num].children[0].href;
 };
 
@@ -1439,6 +1464,7 @@ const counterByDepth = [];
 function addStepNumberText(
   ol,
   depth = 0,
+  indent = '',
   special = [...ol.classList].some(c => c.startsWith('nested-')),
 ) {
   let counter = !special && counterByDepth[depth];
@@ -1462,8 +1488,11 @@ function addStepNumberText(
   let i = (Number(ol.getAttribute('start')) || 1) - 1;
   for (const li of ol.children) {
     const marker = document.createElement('span');
-    marker.textContent = `${i < cache.length ? cache[i] : getTextForIndex(i)}. `;
+    const markerText = i < cache.length ? cache[i] : getTextForIndex(i);
+    const extraIndent = ' '.repeat(markerText.length + 2);
+    marker.textContent = `${indent}${markerText}. `;
     marker.setAttribute('aria-hidden', 'true');
+    marker.setAttribute('class', 'list-marker');
     const attributesContainer = li.querySelector('.attributes-tag');
     if (attributesContainer == null) {
       li.prepend(marker);
@@ -1471,7 +1500,7 @@ function addStepNumberText(
       attributesContainer.insertAdjacentElement('afterend', marker);
     }
     for (const sublist of li.querySelectorAll(':scope > ol')) {
-      addStepNumberText(sublist, depth + 1, special);
+      addStepNumberText(sublist, depth + 1, indent + extraIndent, special);
     }
     i++;
   }
@@ -1481,6 +1510,52 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('emu-alg > ol').forEach(ol => {
     addStepNumberText(ol);
   });
+});
+
+// Omit indendation when copying a single algorithm step.
+document.addEventListener('copy', evt => {
+  // Construct a DOM from the selection.
+  const doc = document.implementation.createHTMLDocument('');
+  const domRoot = doc.createElement('div');
+  const html = evt.clipboardData.getData('text/html');
+  if (html) {
+    domRoot.innerHTML = html;
+  } else {
+    const selection = getSelection();
+    const singleRange = selection?.rangeCount === 1 && selection.getRangeAt(0);
+    const container = singleRange?.commonAncestorContainer;
+    if (!container?.querySelector?.('.list-marker')) {
+      return;
+    }
+    domRoot.append(singleRange.cloneContents());
+  }
+
+  // Preserve the indentation if there is no hidden list marker, or if selection
+  // of more than one step is indicated by either multiple such markers or by
+  // visible text before the first one.
+  const listMarkers = domRoot.querySelectorAll('.list-marker');
+  if (listMarkers.length !== 1) {
+    return;
+  }
+  const treeWalker = document.createTreeWalker(domRoot, undefined, {
+    acceptNode(node) {
+      return node.nodeType === Node.TEXT_NODE || node === listMarkers[0]
+        ? NodeFilter.FILTER_ACCEPT
+        : NodeFilter.FILTER_SKIP;
+    },
+  });
+  while (treeWalker.nextNode()) {
+    const node = treeWalker.currentNode;
+    if (node.nodeType === Node.ELEMENT_NODE) break;
+    if (/\S/u.test(node.data)) return;
+  }
+
+  // Strip leading indentation from the plain text representation.
+  evt.clipboardData.setData('text/plain', domRoot.textContent.trimStart());
+  if (!html) {
+    evt.clipboardData.setData('text/html', domRoot.innerHTML);
+  }
+  evt.preventDefault();
 });
 
 'use strict';
@@ -1684,6 +1759,7 @@ body.oldtoc {
 
 span[aria-hidden='true'] {
   font-size: 0;
+  white-space: pre;
 }
 
 a {
@@ -1780,6 +1856,10 @@ var {
 var.field {
   font: inherit;
   color: inherit;
+}
+/* suppress line break opportunities between `.` and `[[FieldName]]` */
+var.field::before {
+  content: '\2060'
 }
 
 var.referenced {
@@ -2986,7 +3066,7 @@ li.menu-search-result-term:before {
 }
 </style><style>@media print {
 body {
-  font-family: Arial;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 10pt;
   background: #fff;
   color: #000;
@@ -3037,6 +3117,11 @@ emu-figure img {
   max-width: none;
 }
 
+#toc a,
+#toc var {
+  color: #000;
+}
+
 #toc a[href] {
   background: #fff;
   padding-right: 0.5em;
@@ -3065,6 +3150,10 @@ emu-figure img {
   display: none;
 }
 
+#toc > ol > li {
+  margin-top: 1ex;
+}
+
 #toc,
 #spec-container > emu-intro,
 #spec-container > emu-annex {
@@ -3089,7 +3178,8 @@ emu-table th,
 emu-table td,
 emu-alg li,
 pre,
-h1 {
+h1,
+#metadata-block {
   break-inside: avoid;
 }
 
@@ -3218,7 +3308,7 @@ emu-intro {
 </ul></div><div id="menu-toggle"><svg xmlns="http://www.w3.org/2000/svg" style="width:100%; height:100%; stroke:currentColor" viewBox="0 0 120 120" width="54" height="54">
       <title>Menu</title>
       <path stroke-width="10" stroke-linecap="round" d="M30,60 h60  M30,30 m0,5 h60  M30,90 m0,-5 h60"></path>
-    </svg></div><div id="menu-spacer" class="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins<button class="unpin-all">clear</button></div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle">+</span><a href="#sec-fundamental-objects" title="Fundamental Objects"><span class="secnum">20</span> Fundamental Objects</a><ol class="toc"><li><span class="item-toggle">+</span><a href="#sec-error-objects" title="Error Objects"><span class="secnum">20.5</span> Error Objects</a><ol class="toc"><li><span class="item-toggle">+</span><a href="#sec-properties-of-the-error-constructor" title="Properties of the Error Constructor"><span class="secnum">20.5.2</span> Properties of the Error Constructor</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-error.iserror" title="Error.isError ( arg )"><span class="secnum">20.5.2.1</span> Error.isError ( <var>arg</var> )</a></li></ol></li><li><span class="item-toggle">+</span><a href="#sec-abstract-operations-for-error-objects" title="Abstract Operations for Error Objects"><span class="secnum">20.5.8</span> Abstract Operations for Error Objects</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-iserror" title="IsError ( argument )"><span class="secnum">20.5.8.2</span> IsError ( <var>argument</var> )</a></li></ol></li></ol></li></ol></li><li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License"><span class="secnum">A</span> Copyright &amp; Software License</a></li></ol></div></div><div id="spec-container"><h1 class="version">Stage 2.7 Draft / October 15, 2024</h1><h1 class="title">Error.isError</h1>
+    </svg></div><div id="menu-spacer" class="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins<button class="unpin-all">clear</button></div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle">+</span><a href="#sec-fundamental-objects" title="Fundamental Objects"><span class="secnum">20</span> Fundamental Objects</a><ol class="toc"><li><span class="item-toggle">+</span><a href="#sec-error-objects" title="Error Objects"><span class="secnum">20.5</span> Error Objects</a><ol class="toc"><li><span class="item-toggle">+</span><a href="#sec-properties-of-the-error-constructor" title="Properties of the Error Constructor"><span class="secnum">20.5.2</span> Properties of the Error Constructor</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-error.iserror" title="Error.isError ( arg )"><span class="secnum">20.5.2.1</span> Error.isError ( <var>arg</var> )</a></li></ol></li><li><span class="item-toggle">+</span><a href="#sec-abstract-operations-for-error-objects" title="Abstract Operations for Error Objects"><span class="secnum">20.5.8</span> Abstract Operations for Error Objects</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-iserror" title="IsError ( argument )"><span class="secnum">20.5.8.2</span> IsError ( <var>argument</var> )</a></li></ol></li></ol></li></ol></li><li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License"><span class="secnum">A</span> Copyright &amp; Software License</a></li></ol></div></div><div id="spec-container"><h1 class="version">Stage 2.7 Draft / November 11, 2024</h1><h1 class="title">Error.isError</h1>
 
 <emu-clause id="sec-fundamental-objects" number="20">
 	<h1><span class="secnum">20</span> Fundamental Objects</h1>
