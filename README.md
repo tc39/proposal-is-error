@@ -3,7 +3,7 @@ ECMAScript Proposal, specs, and reference implementation for `Error.isError`
 
 Spec drafted by [@ljharb](https://github.com/ljharb).
 
-This proposal is currently Stage 2.7 of the [process](https://tc39.github.io/process-document/).
+This proposal is currently Stage 3 of the [process](https://tc39.github.io/process-document/).
 
 ## Rationale
 I brought up concerns to the committee about `Symbol.toStringTag`, and how previously reliable and unspoofable `Object#toString` calls would now no longer be reliable. The committee consensus was that as long as there were prototype methods for all builtins that, at the least, threw an error when an internal slot was not present, that would be sufficient to serve as a reliable branding test.
